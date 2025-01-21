@@ -26,7 +26,7 @@ class aiConn:
         return ' '.join(frase)
 
     @staticmethod
-    def send_request(message, temperature=0.4, max_tokens=1000):
+    def send_request(message, temperature=0.4, max_tokens=500):
         """Envia uma solicitação para o serviço de AI e retorna a resposta."""
         payload = {
             "messages": [
