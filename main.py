@@ -1,10 +1,11 @@
 import components.VoiceRecognizer.voice_recognizer as voice_recognizer
 import components.Ai.ai_connection as ai_connection
-
+import components.Text_To_Speech.text_to_speech as text_to_speech
 
 def main():
     recognizer = voice_recognizer.VoiceRecognizer()  # Inicializa o reconhecedor de voz
     ai = ai_connection.aiConn()  # Inicializa a conexão com o serviço de AI
+    tts = text_to_speech.TextToSpeech() # Inicializa o sintetizador de voz
 
     while True:
         audio = recognizer.listen()  # Captura o áudio
@@ -16,6 +17,7 @@ def main():
         print("User:", user_input)
 
         if user_input.lower() == 'sair':
+            tts.speak("Saindo do chatbot. Adeus!")
             print("Saindo do chatbot. Adeus!")
             break
 
@@ -25,8 +27,10 @@ def main():
             print("Bot:", response["error"])
         else:
             bot_response = response.get("choices", [{}])[0].get("message", {}).get("content", "No response available.")
+            
             print("Bot:", bot_response)
-            # tts.speak(bot_response)
+            tts.speak(bot_response)
+            
 
 if __name__ == "__main__":
     main()
