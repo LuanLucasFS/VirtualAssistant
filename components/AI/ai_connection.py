@@ -1,15 +1,18 @@
 import sys
 import os
 import requests
+from components.Text_To_Speech.text_to_speech import TextToSpeech
+from components.properties_Reader import PropertiesReader
 
 class aiConn:
     # Adiciona o diretório raiz ao sys.path
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 
-    from components.properties_Reader import PropertiesReader as pr
+    # Inicializa a instância de TextToSpeech
+    tts = TextToSpeech()
 
     # Carregar as propriedades
-    props = pr.load_properties("components/AI/ai.properties")
+    props = PropertiesReader.load_properties("components/AI/ai.properties")
     BASE_URL = props.get("BASE_URL")
     HEADERS = props.get("HEADERS")
 
@@ -56,8 +59,9 @@ class aiConn:
             print("Bot:", response["error"])
         else:
             bot_response = response.get("choices", [{}])[0].get("message", {}).get("content", "No response available.")
+            self.tts.speak(bot_response)
             print("Bot:", bot_response)
-            # tts.speak(bot_response)
+            
 
 if __name__ == "__main__":
     ai_instance = aiConn()
