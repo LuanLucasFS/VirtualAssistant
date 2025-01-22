@@ -1,5 +1,5 @@
 import components.VoiceRecognizer.voice_recognizer as voice_recognizer
-import components.Ai.ai_connection as ai_connection
+import components.Ai.test_ai_conn as ai_connection
 import components.Text_To_Speech.text_to_speech as text_to_speech
 
 def main():
@@ -15,21 +15,21 @@ def main():
         # Tenta reconhecer o áudio e imprime o texto
         user_input = recognizer.recognize(audio)
         print("User:", user_input)
+        if(user_input != "Could not understand audio"):
+            if user_input.lower() == 'sair':
+                tts.speak("Saindo do chatbot. Adeus!")
+                print("Saindo do chatbot. Adeus!")
+                break
 
-        if user_input.lower() == 'sair':
-            tts.speak("Saindo do chatbot. Adeus!")
-            print("Saindo do chatbot. Adeus!")
-            break
-
-        # Envia a solicitação para o serviço de AI e imprime a resposta
-        response = ai.send_request(user_input)
-        if "error" in response:
-            print("Bot:", response["error"])
-        else:
-            bot_response = response.get("choices", [{}])[0].get("message", {}).get("content", "No response available.")
-            
-            print("Bot:", bot_response)
-            tts.speak(bot_response)
+            # Envia a solicitação para o serviço de AI e imprime a resposta
+            response = ai.send_request(user_input)
+            if "error" in response:
+                print("Bot:", response["error"])
+            else:
+                bot_response = response.get("choices", [{}])[0].get("message", {}).get("content", "No response available.")
+                
+                print("Bot:", bot_response)
+                
             
 
 if __name__ == "__main__":
